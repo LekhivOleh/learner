@@ -279,7 +279,6 @@ __pycache__/
 # Configuration files that may contain secrets
 appsettings.*.json
 !appsettings.json
-!appsettings.Development.json
 secrets.json
 user-secrets.json
 
@@ -319,6 +318,9 @@ id_ed25519
 
 # VS Code workspace files
 *.code-workspace
+
+# ASP.NET Core Properties folder (contains launchSettings.json)
+Properties/
 
 # Temporary files
 *.tmp
