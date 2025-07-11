@@ -266,3 +266,90 @@ __pycache__/
 
 # Cake - Uncomment if you are using it
 # tools/
+
+# Environment variables and secrets
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+.env.staging
+*.env
+
+# Configuration files that may contain secrets
+appsettings.*.json
+!appsettings.json
+!appsettings.Development.json
+secrets.json
+user-secrets.json
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Log files that may contain sensitive data
+*.log
+logs/
+log/
+
+# Keys, certificates, and crypto materials
+*.key
+*.pem
+*.p12
+*.pfx
+*.crt
+*.cer
+*.csr
+*.jks
+*.keystore
+
+# SSH keys
+id_rsa
+id_dsa
+id_ecdsa
+id_ed25519
+*.pub
+
+# VS Code settings (keep workspace settings, ignore user settings)
+.vscode/settings.json
+.vscode/launch.json
+.vscode/extensions.json
+.vscode/*.code-snippets
+
+# VS Code workspace files
+*.code-workspace
+
+# Temporary files
+*.tmp
+*.temp
+*~
+.DS_Store
+Thumbs.db
+
+# Editor backups and swap files
+*.swp
+*.swo
+*~
+.#*
+\#*#
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+.docker/
+
+# Azure
+*.azurePubxml
+*.pubxml
+PublishProfiles/
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.nfs*
