@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 
-namespace Models
+namespace learner.Models
 {
     [Index(nameof(Username), IsUnique = true)]
     public class User

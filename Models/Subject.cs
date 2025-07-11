@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
-using Models;
 
-namespace Models
+namespace learner.Models
 {
     public class Subject
     {

@@ -1,8 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Models;
 
-namespace Models
+namespace learner.Models
 {
     public class Entry
     {

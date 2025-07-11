@@ -1,4 +1,4 @@
-namespace Models
+namespace learner.Models
 {
     public enum EntryType
     {
