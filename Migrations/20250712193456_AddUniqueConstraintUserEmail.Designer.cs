@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using learner;
@@ -11,9 +12,11 @@ using learner;
 namespace learner.Migrations
 {
     [DbContext(typeof(LearnerDbContext))]
-    partial class LearnerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250712193456_AddUniqueConstraintUserEmail")]
+    partial class AddUniqueConstraintUserEmail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
