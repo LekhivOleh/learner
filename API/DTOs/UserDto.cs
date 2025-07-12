@@ -6,6 +6,7 @@ namespace learner.DTOs
     {
         public Guid Id { get; set; }
         public string Username { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
     }
 
     public class CreateUserDto
@@ -17,6 +18,10 @@ namespace learner.DTOs
         [Required]
         [MinLength(6)]
         public string Password { get; set; } = string.Empty;
+
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; } = string.Empty;
     }
 
     public class UpdateUserDto
@@ -26,5 +31,8 @@ namespace learner.DTOs
 
         [MinLength(6)]
         public string? Password { get; set; }
+
+        [EmailAddress]
+        public string? Email { get; set; }
     }
 }

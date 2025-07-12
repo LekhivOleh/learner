@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace learner.Models
 {
@@ -14,6 +15,10 @@ namespace learner.Models
 
         [Required]
         public string PasswordHash { get; set; } = string.Empty;
+
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; } = string.Empty;
 
         public ICollection<Subject> Subjects { get; set; } = new List<Subject>();
     }
