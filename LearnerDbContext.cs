@@ -1,7 +1,7 @@
 using learner.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace learner.LearnerDbContext;
+namespace learner;
 
 public class LearnerDbContext(DbContextOptions<LearnerDbContext> options) : DbContext(options)
 {
