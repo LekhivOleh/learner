@@ -51,7 +51,7 @@ namespace learner.API.Controllers
         /// <param name="createUserDto">The user to create.</param>
         /// <returns>The created user.</returns>
         [HttpPost]
-        public async Task<IActionResult> CreateUser(CreateUserDto createUserDto)
+        public async Task<IActionResult> CreateUser([FromBody] CreateUserDto createUserDto)
         {
             var user = await userService.CreateUserAsync(createUserDto);
             return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, user);
@@ -64,7 +64,7 @@ namespace learner.API.Controllers
         /// <param name="updateUserDto">The updated user data.</param>
         /// <returns>The updated user.</returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(Guid id, UpdateUserDto updateUserDto)
+        public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UpdateUserDto updateUserDto)
         {
             var user = await userService.UpdateUserAsync(id, updateUserDto);
             if (user == null) return NotFound();

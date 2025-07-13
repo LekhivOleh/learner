@@ -21,6 +21,8 @@ namespace learner.DTOs
         [Required]
         [MaxLength(100)]
         public string Title { get; set; } = string.Empty;
+        [Required]
+        public Guid UserId { get; set; }
     }
 
     public class UpdateSubjectDto

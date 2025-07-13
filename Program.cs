@@ -1,5 +1,5 @@
 using learner;
-using learner.API.Interfaces;
+using learner.API.Interfaces.Repositories;
 using learner.API.Interfaces.Services;
 using learner.API.Repositories;
 using learner.API.Services;
@@ -14,13 +14,18 @@ builder.Services.AddDbContext<LearnerDbContext>(options =>
 
 // Swagger configuration
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.OrderActionsBy(apiDesc => apiDesc.HttpMethod);
+});
 
 builder.Services.AddControllers();
 
 // Register services and repositories
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
+builder.Services.AddScoped<ISubjectService, SubjectService>();
 
 var app = builder.Build();
 
@@ -38,4 +43,3 @@ app.MapControllers();
 app.MapGet("/", () => "Wassup");
 
 app.Run();
-

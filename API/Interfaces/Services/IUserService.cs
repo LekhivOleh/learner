@@ -1,5 +1,4 @@
 using learner.DTOs;
-using learner.Models;
 
 namespace learner.API.Interfaces.Services
 {

@@ -1,4 +1,4 @@
-using learner.API.Interfaces;
+using learner.API.Interfaces.Repositories;
 using learner.Models;
 using Microsoft.EntityFrameworkCore;
 

@@ -1,5 +1,5 @@
 
-using learner.API.Interfaces;
+using learner.API.Interfaces.Repositories;
 using learner.API.Interfaces.Services;
 using learner.DTOs;
 using learner.Models;
@@ -66,6 +66,7 @@ namespace learner.API.Services
             };
 
             await userRepository.CreateAsync(newUser);
+            await userRepository.SaveChangesAsync();
             return new UserDto
             {
                 Id = newUser.Id,
@@ -95,6 +96,7 @@ namespace learner.API.Services
             }
 
             await userRepository.UpdateAsync(existingUser);
+            await userRepository.SaveChangesAsync();
             return new UserDto()
             {
                 Id = existingUser.Id,
@@ -105,11 +107,16 @@ namespace learner.API.Services
 
         public async Task<bool> DeleteUserAsync(Guid id)
         {
-            if (id == Guid.Empty)
+            try
             {
-                throw new ArgumentException("ID is empty", nameof(id));
+                await userRepository.DeleteAsync(id);
+                await userRepository.SaveChangesAsync();
+                return true;
             }
-            return await userRepository.DeleteAsync(id);
+            catch (KeyNotFoundException)
+            {
+                return false;
+            }
         }
     }
 }

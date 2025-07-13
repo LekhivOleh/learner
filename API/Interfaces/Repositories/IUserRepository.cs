@@ -1,6 +1,6 @@
 using learner.Models;
 
-namespace learner.API.Interfaces;
+namespace learner.API.Interfaces.Repositories;
 
 public interface IUserRepository
 {
