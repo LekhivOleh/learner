@@ -25,12 +25,13 @@ public class SubjectRepository(LearnerDbContext context) : ISubjectRepository
     public async Task AddSubjectAsync(Subject subject)
     {
         await context.Subjects.AddAsync(subject);
+        await SaveChangesAsync();
     }
 
     public async Task UpdateSubjectAsync(Guid id, Subject subject)
     {
         context.Subjects.Update(subject);
-        await context.SaveChangesAsync();
+        await SaveChangesAsync();
     }
 
     public async Task<bool> DeleteSubjectAsync(Guid id)
@@ -42,7 +43,7 @@ public class SubjectRepository(LearnerDbContext context) : ISubjectRepository
         }
 
         context.Subjects.Remove(subject);
-        await context.SaveChangesAsync();
+        await SaveChangesAsync();
         return true;
     }
 
