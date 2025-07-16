@@ -8,38 +8,42 @@ namespace learner.API.Repositories
     {
         public async Task<IEnumerable<User>> GetAllAsync()
         {
-            return await context.Users.ToListAsync();
+            return await context.Users
+            .AsNoTracking()
+            .ToListAsync();
         }
 
         public async Task<User?> GetByIdAsync(Guid id)
         {
-            return await context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            return await context.Users.FindAsync(id);
         }
 
         public async Task<User?> GetByEmailAsync(string email)
         {
-            return await context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            return await context.Users
+            .AsNoTracking()
+            .FirstOrDefaultAsync(u => u.Email == email);
         }
 
         public async Task CreateAsync(User user)
         {
-            context.Users.Add(user);
-            await SaveChangesAsync();
+            await context.Users.AddAsync(user);
         }
 
-        public async Task UpdateAsync(User user)
+        public void Update(User user)
         {
             context.Users.Update(user);
-            await SaveChangesAsync();
         }
 
         public async Task<bool> DeleteAsync(Guid id)
         {
             var user = await GetByIdAsync(id);
-            if (user == null) return false;
+            if (user == null)
+            {
+                return false;
+            }
 
             context.Users.Remove(user);
-            await SaveChangesAsync();
             return true;
         }
 

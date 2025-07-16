@@ -4,10 +4,10 @@ namespace learner.API.Interfaces.Repositories;
 
 public interface ISubjectRepository
 {
-    Task<Subject?> GetSubjectByIdAsync(Guid id);
-    Task<IEnumerable<Subject?>> GetAllSubjectsAsync();
-    Task AddSubjectAsync(Subject subject);
-    Task UpdateSubjectAsync(Guid id, Subject subject);
-    Task<bool> DeleteSubjectAsync(Guid id);
+    Task<Subject?> GetByIdAsync(Guid id);
+    Task<IEnumerable<Subject?>> GetAllAsync();
+    Task CreateAsync(Subject subject);
+    void Update(Subject subject);
+    Task<bool> DeleteAsync(Guid id);
     Task SaveChangesAsync();
 }

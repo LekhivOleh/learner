@@ -9,6 +9,7 @@ public class EntryRepository(LearnerDbContext context) : IEntryRepository
     public async Task<IEnumerable<Entry>> GetAllAsync()
     {
         return await context.Entries
+        .AsNoTracking()
         .Include(e => e.Subject)
         .ToListAsync();
     }
@@ -16,20 +17,19 @@ public class EntryRepository(LearnerDbContext context) : IEntryRepository
     public async Task<Entry?> GetByIdAsync(Guid id)
     {
         return await context.Entries
+        .AsNoTracking()
         .Include(e => e.Subject)
         .FirstOrDefaultAsync(e => e.Id == id);
     }
 
     public async Task CreateAsync(Entry entry)
     {
-        context.Entries.Add(entry);
-        await SaveChangesAsync();
+        await context.Entries.AddAsync(entry);
     }
 
-    public async Task UpdateAsync(Entry entry)
+    public void Update(Entry entry)
     {
         context.Entries.Update(entry);
-        await SaveChangesAsync();
     }
 
     public async Task<bool> DeleteAsync(Guid id)
@@ -41,7 +41,6 @@ public class EntryRepository(LearnerDbContext context) : IEntryRepository
         }
 
         context.Entries.Remove(entry);
-        await SaveChangesAsync();
         return true;
     }
 
@@ -54,6 +53,7 @@ public class EntryRepository(LearnerDbContext context) : IEntryRepository
     {
         return await context.Entries
         .Where(e => e.SubjectId == subjectId)
+        .AsNoTracking()
         .ToListAsync();
     }
 }

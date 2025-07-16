@@ -6,44 +6,43 @@ namespace learner.API.Repositories;
 
 public class SubjectRepository(LearnerDbContext context) : ISubjectRepository
 {
-    public async Task<Subject?> GetSubjectByIdAsync(Guid id)
+    public async Task<Subject?> GetByIdAsync(Guid id)
     {
         return await context.Subjects
+            .AsNoTracking()
             .Include(s => s.User)
             .Include(s => s.Entries)
             .FirstOrDefaultAsync(s => s.Id == id);
     }
 
-    public async Task<IEnumerable<Subject?>> GetAllSubjectsAsync()
+    public async Task<IEnumerable<Subject?>> GetAllAsync()
     {
         return await context.Subjects
+            .AsNoTracking()
             .Include(s => s.User)
             .Include(s => s.Entries)
             .ToListAsync();
     }
 
-    public async Task AddSubjectAsync(Subject subject)
+    public async Task CreateAsync(Subject subject)
     {
         await context.Subjects.AddAsync(subject);
-        await SaveChangesAsync();
     }
 
-    public async Task UpdateSubjectAsync(Guid id, Subject subject)
+    public void Update(Subject subject)
     {
         context.Subjects.Update(subject);
-        await SaveChangesAsync();
     }
 
-    public async Task<bool> DeleteSubjectAsync(Guid id)
+    public async Task<bool> DeleteAsync(Guid id)
     {
-        var subject = await GetSubjectByIdAsync(id);
+        var subject = await GetByIdAsync(id);
         if (subject == null)
         {
             return false;
         }
 
         context.Subjects.Remove(subject);
-        await SaveChangesAsync();
         return true;
     }
 

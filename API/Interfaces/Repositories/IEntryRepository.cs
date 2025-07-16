@@ -7,7 +7,7 @@ public interface IEntryRepository
     Task<IEnumerable<Entry>> GetAllAsync();
     Task<Entry?> GetByIdAsync(Guid id);
     Task CreateAsync(Entry entry);
-    Task UpdateAsync(Entry entry);
+    void Update(Entry entry);
     Task<bool> DeleteAsync(Guid id);
     Task SaveChangesAsync();
     Task<IEnumerable<Entry>> GetBySubjectIdAsync(Guid subjectId);
