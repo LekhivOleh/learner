@@ -27,7 +27,7 @@ public class SubjectRepository(LearnerDbContext context) : ISubjectRepository
         await context.Subjects.AddAsync(subject);
     }
 
-    public async Task UpdateSubjectAsync(Subject subject)
+    public async Task UpdateSubjectAsync(Guid id, Subject subject)
     {
         context.Subjects.Update(subject);
         await context.SaveChangesAsync();

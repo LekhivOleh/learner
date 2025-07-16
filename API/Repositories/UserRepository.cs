@@ -21,18 +21,16 @@ namespace learner.API.Repositories
             return await context.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
 
-        public async Task<User> CreateAsync(User user)
+        public async Task CreateAsync(User user)
         {
             context.Users.Add(user);
             await SaveChangesAsync();
-            return user;
         }
 
-        public async Task<User> UpdateAsync(User user)
+        public async Task UpdateAsync(User user)
         {
             context.Users.Update(user);
             await SaveChangesAsync();
-            return user;
         }
 
         public async Task<bool> DeleteAsync(Guid id)

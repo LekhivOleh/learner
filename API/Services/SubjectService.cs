@@ -84,15 +84,11 @@ public class SubjectService(ISubjectRepository subjectRepository) : ISubjectServ
 
     public async Task<bool> DeleteAsync(Guid id)
     {
-        try
+        var subject = await subjectRepository.DeleteSubjectAsync(id);
+        if (subject)
         {
-            await subjectRepository.DeleteSubjectAsync(id);
             await subjectRepository.SaveChangesAsync();
-            return true;
         }
-        catch (KeyNotFoundException)
-        {
-            return false;
-        }
+        return subject;
     }
 }

@@ -41,8 +41,6 @@ namespace learner.DTOs
         [MaxLength(5000)]
         public string? Content { get; set; }
 
-        public EntryType? Type { get; set; }
-
         public bool? IsCompleted { get; set; }
     }
 }
