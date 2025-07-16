@@ -69,7 +69,7 @@ public class SubjectService(ISubjectRepository subjectRepository) : ISubjectServ
             existingSubject.Title = subject.Title;
         }
 
-        await subjectRepository.UpdateSubjectAsync(existingSubject);
+        await subjectRepository.UpdateSubjectAsync(id, existingSubject);
         await subjectRepository.SaveChangesAsync();
 
         return new SubjectDto
