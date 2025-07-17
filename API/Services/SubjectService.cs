@@ -2,7 +2,6 @@ using learner.API.Interfaces.Repositories;
 using learner.API.Interfaces.Services;
 using learner.DTOs;
 using learner.Models;
-using Microsoft.AspNetCore.Mvc;
 
 namespace learner.API.Services;
 
@@ -10,7 +9,7 @@ public class SubjectService(ISubjectRepository subjectRepository) : ISubjectServ
 {
     public async Task<SubjectDto?> GetByIdAsync(Guid id)
     {
-        var subject = await subjectRepository.GetSubjectByIdAsync(id);
+        var subject = await subjectRepository.GetByIdAsync(id);
         return subject == null ? null : new SubjectDto
         {
             Id = subject.Id,
@@ -22,7 +21,7 @@ public class SubjectService(ISubjectRepository subjectRepository) : ISubjectServ
 
     public async Task<IEnumerable<SubjectDto?>> GetAllAsync()
     {
-        var subjects = await subjectRepository.GetAllSubjectsAsync();
+        var subjects = await subjectRepository.GetAllAsync();
         return subjects.Select(subject =>
         subject == null ? null : new SubjectDto
         {
@@ -43,7 +42,7 @@ public class SubjectService(ISubjectRepository subjectRepository) : ISubjectServ
             UserId = createSubjectDto.UserId
         };
 
-        await subjectRepository.AddSubjectAsync(subject);
+        await subjectRepository.CreateAsync(subject);
         await subjectRepository.SaveChangesAsync();
 
         return new SubjectDto
@@ -58,7 +57,7 @@ public class SubjectService(ISubjectRepository subjectRepository) : ISubjectServ
 
     public async Task<SubjectDto> UpdateAsync(Guid id, UpdateSubjectDto subject)
     {
-        var existingSubject = await subjectRepository.GetSubjectByIdAsync(id);
+        var existingSubject = await subjectRepository.GetByIdAsync(id);
         if (existingSubject == null)
         {
             throw new KeyNotFoundException("Subject not found");
@@ -69,7 +68,7 @@ public class SubjectService(ISubjectRepository subjectRepository) : ISubjectServ
             existingSubject.Title = subject.Title;
         }
 
-        await subjectRepository.UpdateSubjectAsync(id, existingSubject);
+        subjectRepository.Update(existingSubject);
         await subjectRepository.SaveChangesAsync();
 
         return new SubjectDto
@@ -84,7 +83,7 @@ public class SubjectService(ISubjectRepository subjectRepository) : ISubjectServ
 
     public async Task<bool> DeleteAsync(Guid id)
     {
-        var subject = await subjectRepository.DeleteSubjectAsync(id);
+        var subject = await subjectRepository.DeleteAsync(id);
         if (subject)
         {
             await subjectRepository.SaveChangesAsync();

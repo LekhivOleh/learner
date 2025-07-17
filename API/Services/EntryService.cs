@@ -110,7 +110,7 @@ public class EntryService(IEntryRepository entryRepository) : IEntryService
             existingEntry.IsCompleted = entry.IsCompleted.Value;
         }
 
-        await entryRepository.UpdateAsync(existingEntry);
+        entryRepository.Update(existingEntry);
         await entryRepository.SaveChangesAsync();
 
         return new EntryDto

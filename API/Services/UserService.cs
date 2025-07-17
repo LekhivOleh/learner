@@ -95,7 +95,7 @@ namespace learner.API.Services
                 existingUser.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.Password);
             }
 
-            await userRepository.UpdateAsync(existingUser);
+            userRepository.Update(existingUser);
             await userRepository.SaveChangesAsync();
             return new UserDto()
             {
