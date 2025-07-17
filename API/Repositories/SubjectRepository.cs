@@ -9,7 +9,6 @@ public class SubjectRepository(LearnerDbContext context) : ISubjectRepository
     public async Task<Subject?> GetByIdAsync(Guid id)
     {
         return await context.Subjects
-            .AsNoTracking()
             .Include(s => s.User)
             .Include(s => s.Entries)
             .FirstOrDefaultAsync(s => s.Id == id);

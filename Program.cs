@@ -1,9 +1,9 @@
+using System.Text.Json.Serialization;
 using learner;
 using learner.API.Interfaces.Repositories;
 using learner.API.Interfaces.Services;
 using learner.API.Repositories;
 using learner.API.Services;
-using learner.Middleware;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,7 +19,11 @@ builder.Services.AddSwaggerGen(c =>
     c.OrderActionsBy(apiDesc => apiDesc.HttpMethod);
 });
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
 
 // Register services and repositories
 builder.Services.AddScoped<IUserService, UserService>();
@@ -30,9 +34,6 @@ builder.Services.AddScoped<IEntryRepository, EntryRepository>();
 builder.Services.AddScoped<IEntryService, EntryService>();
 
 var app = builder.Build();
-
-// Middleware configuration
-app.UseExceptionHandling();
 
 if (app.Environment.IsDevelopment())
 {

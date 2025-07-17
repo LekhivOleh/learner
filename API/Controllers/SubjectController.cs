@@ -118,6 +118,10 @@ namespace learner.API.Controllers
                 await subjectService.UpdateAsync(id, subject);
                 return NoContent();
             }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
             catch (ArgumentException ex)
             {
                 return BadRequest(ex.Message);

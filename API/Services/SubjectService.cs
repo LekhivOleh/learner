@@ -77,7 +77,7 @@ public class SubjectService(ISubjectRepository subjectRepository) : ISubjectServ
             Title = existingSubject.Title,
             CreatedAt = existingSubject.CreatedAt,
             UserId = existingSubject.UserId,
-            EntryCount = existingSubject.Entries.Count
+            EntryCount = 0
         };
     }
 

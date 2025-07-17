@@ -17,7 +17,6 @@ public class EntryRepository(LearnerDbContext context) : IEntryRepository
     public async Task<Entry?> GetByIdAsync(Guid id)
     {
         return await context.Entries
-        .AsNoTracking()
         .Include(e => e.Subject)
         .FirstOrDefaultAsync(e => e.Id == id);
     }
@@ -54,6 +53,7 @@ public class EntryRepository(LearnerDbContext context) : IEntryRepository
         return await context.Entries
         .Where(e => e.SubjectId == subjectId)
         .AsNoTracking()
+        .Include(e => e.Subject)
         .ToListAsync();
     }
 }

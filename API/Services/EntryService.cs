@@ -19,7 +19,7 @@ public class EntryService(IEntryRepository entryRepository) : IEntryService
             IsCompleted = e.IsCompleted,
             CreatedAt = e.CreatedAt,
             SubjectId = e.SubjectId,
-            SubjectTitle = e.Subject.Title
+            SubjectTitle = e.Subject?.Title ?? string.Empty
         });
     }
 
@@ -35,7 +35,7 @@ public class EntryService(IEntryRepository entryRepository) : IEntryService
             IsCompleted = e.IsCompleted,
             CreatedAt = e.CreatedAt,
             SubjectId = e.SubjectId,
-            SubjectTitle = e.Subject.Title
+            SubjectTitle = e.Subject?.Title ?? string.Empty
         });
     }
 
@@ -76,16 +76,18 @@ public class EntryService(IEntryRepository entryRepository) : IEntryService
         await entryRepository.CreateAsync(newEntry);
         await entryRepository.SaveChangesAsync();
 
+        var createdEntry = await entryRepository.GetByIdAsync(newEntry.Id) ?? throw new InvalidOperationException("Created entry could not be found.");
+
         return new EntryDto
         {
-            Id = newEntry.Id,
-            Title = newEntry.Title,
-            Content = newEntry.Content,
-            Type = newEntry.Type,
-            IsCompleted = newEntry.IsCompleted,
-            CreatedAt = newEntry.CreatedAt,
-            SubjectId = newEntry.SubjectId,
-            SubjectTitle = newEntry.Subject.Title
+            Id = createdEntry.Id,
+            Title = createdEntry.Title,
+            Content = createdEntry.Content,
+            Type = createdEntry.Type,
+            IsCompleted = createdEntry.IsCompleted,
+            CreatedAt = createdEntry.CreatedAt,
+            SubjectId = createdEntry.SubjectId,
+            SubjectTitle = createdEntry.Subject.Title
         };
     }
 
