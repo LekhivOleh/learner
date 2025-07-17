@@ -17,8 +17,15 @@ namespace learner.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllEntries()
         {
-            var entries = await entryService.GetAllEntriesAsync();
-            return Ok(entries);
+            try
+            {
+                var entries = await entryService.GetAllEntriesAsync();
+                return Ok(entries);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
         }
 
         /// <summary>
@@ -31,8 +38,23 @@ namespace learner.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetEntriesBySubjectId(Guid id)
         {
-            var entries = await entryService.GetEntriesBySubjectIdAsync(id);
-            return Ok(entries);
+            try
+            {
+                if (id == Guid.Empty)
+                {
+                    return BadRequest("Invalid subject ID.");
+                }
+                var entries = await entryService.GetEntriesBySubjectIdAsync(id);
+                return Ok(entries);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
         }
 
         /// <summary>
@@ -45,8 +67,23 @@ namespace learner.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateEntry([FromBody] CreateEntryDto entry)
         {
-            var createdEntry = await entryService.CreateEntryAsync(entry);
-            return CreatedAtAction(nameof(GetEntriesBySubjectId), new { id = createdEntry.SubjectId }, createdEntry);
+            try
+            {
+                if (ModelState.IsValid == false)
+                {
+                    return BadRequest(ModelState);
+                }
+                var createdEntry = await entryService.CreateEntryAsync(entry);
+                return CreatedAtAction(nameof(GetEntriesBySubjectId), new { id = createdEntry.SubjectId }, createdEntry);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
         }
 
         /// <summary>
@@ -60,8 +97,23 @@ namespace learner.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateEntry(Guid id, [FromBody] UpdateEntryDto entry)
         {
-            var updatedEntry = await entryService.UpdateEntryAsync(id, entry);
-            return Ok(updatedEntry);
+            try
+            {
+                if (ModelState.IsValid == false)
+                {
+                    return BadRequest(ModelState);
+                }
+                if (id == Guid.Empty)
+                {
+                    return BadRequest("Invalid entry ID.");
+                }
+                var updatedEntry = await entryService.UpdateEntryAsync(id, entry);
+                return Ok(updatedEntry);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
         }
 
         /// <summary>
@@ -74,8 +126,23 @@ namespace learner.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEntry(Guid id)
         {
-            await entryService.DeleteEntryAsync(id);
-            return NoContent();
+            try
+            {
+                if (id == Guid.Empty)
+                {
+                    return BadRequest("Invalid entry ID.");
+                }
+                await entryService.DeleteEntryAsync(id);
+                return NoContent();
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
         }
     }
 }

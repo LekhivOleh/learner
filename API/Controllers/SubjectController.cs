@@ -20,12 +20,23 @@ namespace learner.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetSubjectById(Guid id)
         {
-            var subject = await subjectService.GetByIdAsync(id);
-            if (subject == null)
+            try
             {
-                return NotFound();
+                if (id == Guid.Empty)
+                {
+                    return BadRequest("Invalid subject ID.");
+                }
+                var subject = await subjectService.GetByIdAsync(id);
+                if (subject == null)
+                {
+                    return NotFound();
+                }
+                return Ok(subject);
             }
-            return Ok(subject);
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
         }
 
         /// <summary>
@@ -37,8 +48,15 @@ namespace learner.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllSubjects()
         {
-            var subjects = await subjectService.GetAllAsync();
-            return Ok(subjects);
+            try
+            {
+                var subjects = await subjectService.GetAllAsync();
+                return Ok(subjects);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
         }
 
         /// <summary>
@@ -53,8 +71,23 @@ namespace learner.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateSubject([FromBody] CreateSubjectDto createSubjectDto)
         {
-            var subject = await subjectService.AddAsync(createSubjectDto);
-            return CreatedAtAction(nameof(GetSubjectById), new { id = subject.Id }, subject);
+            try
+            {
+                if (ModelState.IsValid == false)
+                {
+                    return BadRequest(ModelState);
+                }
+                var subject = await subjectService.AddAsync(createSubjectDto);
+                return CreatedAtAction(nameof(GetSubjectById), new { id = subject.Id }, subject);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
         }
 
         /// <summary>
@@ -72,8 +105,27 @@ namespace learner.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateSubject(Guid id, [FromBody] UpdateSubjectDto subject)
         {
-            await subjectService.UpdateAsync(id, subject);
-            return NoContent();
+            try
+            {
+                if (ModelState.IsValid == false)
+                {
+                    return BadRequest(ModelState);
+                }
+                if (id == Guid.Empty)
+                {
+                    return BadRequest("Invalid subject ID.");
+                }
+                await subjectService.UpdateAsync(id, subject);
+                return NoContent();
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
         }
 
         /// <summary>
@@ -88,12 +140,23 @@ namespace learner.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSubject(Guid id)
         {
-            var result = await subjectService.DeleteAsync(id);
-            if (!result)
+            try
             {
-                return NotFound();
+                if (id == Guid.Empty)
+                {
+                    return BadRequest("Invalid subject ID.");
+                }
+                var result = await subjectService.DeleteAsync(id);
+                if (!result)
+                {
+                    return NotFound();
+                }
+                return NoContent();
             }
-            return NoContent();
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
         }
     }
 }

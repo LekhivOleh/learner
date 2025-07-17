@@ -1,5 +1,6 @@
 using learner.API.Interfaces.Services;
 using learner.DTOs;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace learner.API.Controllers
@@ -15,8 +16,15 @@ namespace learner.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllUsers()
         {
-            var users = await userService.GetAllUsersAsync();
-            return Ok(users);
+            try
+            {
+                var users = await userService.GetAllUsersAsync();
+                return Ok(users);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
         }
 
         /// <summary>
@@ -27,9 +35,27 @@ namespace learner.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserById(Guid id)
         {
-            var user = await userService.GetUserByIdAsync(id);
-            if (user == null) return NotFound();
-            return Ok(user);
+            try
+            {
+                if (id == Guid.Empty)
+                {
+                    return BadRequest("Invalid user ID.");
+                }
+                var user = await userService.GetUserByIdAsync(id);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+                return Ok(user);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
         }
 
         /// <summary>
@@ -40,9 +66,27 @@ namespace learner.API.Controllers
         [HttpGet("email/{email}")]
         public async Task<IActionResult> GetUserByEmail(string email)
         {
-            var user = await userService.GetUserByEmailAsync(email);
-            if (user == null) return NotFound();
-            return Ok(user);
+            try
+            {
+                if (string.IsNullOrWhiteSpace(email))
+                {
+                    return BadRequest("Email cannot be empty.");
+                }
+                var user = await userService.GetUserByEmailAsync(email);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+                return Ok(user);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
         }
 
         /// <summary>
@@ -53,8 +97,24 @@ namespace learner.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateUser([FromBody] CreateUserDto createUserDto)
         {
-            var user = await userService.CreateUserAsync(createUserDto);
-            return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, user);
+            try
+            {
+                if (ModelState.IsValid == false)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var user = await userService.CreateUserAsync(createUserDto);
+                return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, user);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
         }
 
         /// <summary>
@@ -66,9 +126,31 @@ namespace learner.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UpdateUserDto updateUserDto)
         {
-            var user = await userService.UpdateUserAsync(id, updateUserDto);
-            if (user == null) return NotFound();
-            return Ok(user);
+            try
+            {
+                if (ModelState.IsValid == false)
+                {
+                    return BadRequest(ModelState);
+                }
+                if (id == Guid.Empty)
+                {
+                    return BadRequest("Invalid user ID.");
+                }
+                var user = await userService.UpdateUserAsync(id, updateUserDto);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+                return Ok(user);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
         }
 
         /// <summary>
@@ -79,9 +161,23 @@ namespace learner.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(Guid id)
         {
-            var result = await userService.DeleteUserAsync(id);
-            if (!result) return NotFound();
-            return NoContent();
+            try
+            {
+                var result = await userService.DeleteUserAsync(id);
+                if (!result)
+                {
+                    return NotFound();
+                }
+                return NoContent();
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
         }
     }
 }
