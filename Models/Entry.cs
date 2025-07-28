@@ -25,7 +25,6 @@ namespace learner.Models
         [Required]
         public Guid SubjectId { get; set; }
 
-        [ForeignKey(nameof(SubjectId))]
-        public Subject Subject { get; set; } = null!;
+        public Subject? Subject { get; set; }
     }
 }

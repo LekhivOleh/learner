@@ -55,7 +55,7 @@ namespace learner.Migrations
 
                     b.HasIndex("SubjectId");
 
-                    b.ToTable("Entries");
+                    b.ToTable("Entries", (string)null);
                 });
 
             modelBuilder.Entity("learner.Models.Subject", b =>
@@ -79,7 +79,7 @@ namespace learner.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Subjects");
+                    b.ToTable("Subjects", (string)null);
                 });
 
             modelBuilder.Entity("learner.Models.User", b =>
@@ -109,7 +109,7 @@ namespace learner.Migrations
                     b.HasIndex("Username")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("learner.Models.Entry", b =>
